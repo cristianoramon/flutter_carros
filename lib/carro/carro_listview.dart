@@ -10,18 +10,30 @@ class TipoCarro {
   static final String luxo = "luxo";
 }
 
-class CarroListview extends StatelessWidget {
+class CarroListview extends StatefulWidget {
   String tipo;
 
   CarroListview(this.tipo);
 
   @override
+  State<CarroListview> createState() => _CarroListviewState();
+}
+
+class _CarroListviewState extends State<CarroListview>  with AutomaticKeepAliveClientMixin<CarroListview>{
+  
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+
+    super.build(context);
     return _body();
   }
 
   _body() {
-    Future<List<Carro>> carros = CarrosApi.getCarros(tipo);
+    Future<List<Carro>> carros = CarrosApi.getCarros(widget.tipo);
 
     return FutureBuilder(
       future: carros,
