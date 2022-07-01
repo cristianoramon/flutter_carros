@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_carros/carro/carro_page.dart';
+import 'package:flutter_carros/utils/nav.dart';
 import 'carro.dart';
 import 'carros_api.dart';
 
@@ -19,22 +21,26 @@ class CarroListview extends StatefulWidget {
   State<CarroListview> createState() => _CarroListviewState();
 }
 
-class _CarroListviewState extends State<CarroListview>  with AutomaticKeepAliveClientMixin<CarroListview>{
-  
+class _CarroListviewState extends State<CarroListview>
+    with AutomaticKeepAliveClientMixin<CarroListview> {
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 
+  Future<List<Carro>>? carros;
   @override
   Widget build(BuildContext context) {
-
     super.build(context);
     return _body();
   }
 
-  _body() {
-    Future<List<Carro>> carros = CarrosApi.getCarros(widget.tipo);
+  @override
+  void initState() {
+    super.initState();
+    carros = CarrosApi.getCarros(widget.tipo);
+  }
 
+  _body() {
     return FutureBuilder(
       future: carros,
       builder: (BuildContext context, AsyncSnapshot<List<Carro>> snapshot) {
@@ -99,7 +105,7 @@ class _CarroListviewState extends State<CarroListview>  with AutomaticKeepAliveC
                       children: <Widget>[
                         TextButton(
                           child: const Text('DETALHES'),
-                          onPressed: () {/* ... */},
+                          onPressed: () => _onClickCarro(c),
                         ),
                         TextButton(
                           child: const Text('SHARE'),
@@ -122,5 +128,9 @@ class _CarroListviewState extends State<CarroListview>  with AutomaticKeepAliveC
           */
           }),
     );
+  }
+
+  _onClickCarro(Carro c) {
+    push(context, CarroPage(c));
   }
 }
