@@ -24,24 +24,23 @@ class CarrosApi {
   }
 
   static Future<List<Carro>> getCarros(String tipo) async {
-    
     Map<String, String> headers = {"Content-Type": "application/json"};
-    final List<Carro> carros = []; 
+    final List<Carro> carros = [];
 
     try {
-      Uri url =Uri.parse('https://carros-springboot.herokuapp.com/api/v1/carros/tipo/$tipo');
+      Uri url = Uri.parse(
+          'https://carros-springboot.herokuapp.com/api/v1/carros/tipo/$tipo');
       print(url);
       var response = await http.get(url);
       List list = json.decode(response.body);
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
-      
-      
-      for (Map<String, dynamic> map in list){
+
+      for (Map<String, dynamic> map in list) {
         Carro c = Carro.fromJson(map);
         carros.add(c);
       }
-      
+
       return carros;
     } catch (err) {
       print(err);

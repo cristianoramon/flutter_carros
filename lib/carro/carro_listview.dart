@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -23,11 +25,12 @@ class CarroListview extends StatefulWidget {
 
 class _CarroListviewState extends State<CarroListview>
     with AutomaticKeepAliveClientMixin<CarroListview> {
+  List<Carro>? carros;
+  final _sTreamControle = StreamController<List<Carro>>();
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 
-  Future<List<Carro>>? carros;
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -37,12 +40,20 @@ class _CarroListviewState extends State<CarroListview>
   @override
   void initState() {
     super.initState();
-    carros = CarrosApi.getCarros(widget.tipo);
+    //carros = CarrosApi.getCarros(widget.tipo);
+    //Future<List<Carro>> futureCarro = CarrosApi.getCarros(widget.tipo);
+
+    _loadCarro();
+  }
+
+  void _loadCarro() async {
+    List<Carro> carros = await CarrosApi.getCarros(widget.tipo);
+    _sTreamControle.add(carros);
   }
 
   _body() {
-    return FutureBuilder(
-      future: carros,
+    return StreamBuilder(
+      stream: _sTreamControle.stream,
       builder: (BuildContext context, AsyncSnapshot<List<Carro>> snapshot) {
         List<Carro>? carros = [];
 
