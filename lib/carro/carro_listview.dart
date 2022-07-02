@@ -1,8 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_carros/carro/carro_bloc.dart';
 import 'package:flutter_carros/carro/carro_page.dart';
 import 'package:flutter_carros/utils/nav.dart';
 import 'carro.dart';
@@ -15,8 +15,10 @@ class TipoCarro {
 }
 
 class CarroListview extends StatefulWidget {
+
   String tipo;
 
+ 
   CarroListview(this.tipo);
 
   @override
@@ -26,7 +28,8 @@ class CarroListview extends StatefulWidget {
 class _CarroListviewState extends State<CarroListview>
     with AutomaticKeepAliveClientMixin<CarroListview> {
   List<Carro>? carros;
-  final _sTreamControle = StreamController<List<Carro>>();
+  
+  final _blocCarro = CarroBloc();
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
@@ -43,17 +46,14 @@ class _CarroListviewState extends State<CarroListview>
     //carros = CarrosApi.getCarros(widget.tipo);
     //Future<List<Carro>> futureCarro = CarrosApi.getCarros(widget.tipo);
 
-    _loadCarro();
+    _blocCarro.loadCarro(widget.tipo);
   }
 
-  void _loadCarro() async {
-    List<Carro> carros = await CarrosApi.getCarros(widget.tipo);
-    _sTreamControle.add(carros);
-  }
+
 
   _body() {
     return StreamBuilder(
-      stream: _sTreamControle.stream,
+      stream: _blocCarro.stream,
       builder: (BuildContext context, AsyncSnapshot<List<Carro>> snapshot) {
         List<Carro>? carros = [];
 
@@ -143,5 +143,11 @@ class _CarroListviewState extends State<CarroListview>
 
   _onClickCarro(Carro c) {
     push(context, CarroPage(c));
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
+    _blocCarro.dispose();
   }
 }
