@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter_carros/favorito/carro_dao.dart';
+
 import 'carro.dart';
 import 'package:http/http.dart' as http;
 
@@ -36,8 +38,10 @@ class CarrosApi {
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
 
+      final carroDao = CarroDAO();
       for (Map<String, dynamic> map in list) {
         Carro c = Carro.fromJson(map);
+        carroDao.save(c);
         carros.add(c);
       }
 
