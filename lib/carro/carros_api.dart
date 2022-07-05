@@ -38,13 +38,6 @@ class CarrosApi {
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
 
-      final carroDao = CarroDAO();
-      for (Map<String, dynamic> map in list) {
-        Carro c = Carro.fromJson(map);
-        carroDao.save(c);
-        carros.add(c);
-      }
-
       return carros;
     } catch (err) {
       print(err);

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -15,10 +16,8 @@ class TipoCarro {
 }
 
 class CarroListview extends StatefulWidget {
-
   String tipo;
 
- 
   CarroListview(this.tipo);
 
   @override
@@ -28,7 +27,7 @@ class CarroListview extends StatefulWidget {
 class _CarroListviewState extends State<CarroListview>
     with AutomaticKeepAliveClientMixin<CarroListview> {
   List<Carro>? carros;
-  
+
   final _blocCarro = CarroBloc();
   @override
   // TODO: implement wantKeepAlive
@@ -48,8 +47,6 @@ class _CarroListviewState extends State<CarroListview>
 
     _blocCarro.loadCarro(widget.tipo);
   }
-
-
 
   _body() {
     return StreamBuilder(
@@ -98,8 +95,8 @@ class _CarroListviewState extends State<CarroListview>
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Center(
-                      child: Image.network(
-                        c.urlFoto.toString(),
+                      child: CachedNetworkImage(
+                        imageUrl: c.urlFoto.toString(),
                         width: 250,
                       ),
                     ),
@@ -146,7 +143,7 @@ class _CarroListviewState extends State<CarroListview>
   }
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     _blocCarro.dispose();
   }
