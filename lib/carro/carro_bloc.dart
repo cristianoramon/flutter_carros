@@ -15,8 +15,10 @@ class CarroBloc extends SimpleBloc<List<Carro>> {
 
       if (networkOn) {
         carros = await CarroDAO().findAllByTipo(tipo);
+        add(carros);
       } else {
         carros = await CarrosApi.getCarros(tipo);
+        add(carros);
       }
 
       final carroDao = CarroDAO();
