@@ -39,11 +39,11 @@ class _CarroFormPageState extends State<CarroFormPage> {
     super.initState();
 
     // Copia os dados do carro para o form
-    if (carro != null) {
+    if (carro.nome != null) {
       tNome.text = carro.nome ?? "";
       tDesc.text = carro.descricao ?? "";
       _radioIndex = getTipoInt(carro);
-    } else {}
+    }
   }
 
   @override
@@ -131,7 +131,7 @@ class _CarroFormPageState extends State<CarroFormPage> {
   }
 
   _headerFoto() {
-    return carro != null
+    return carro.nome != null
         ? CachedNetworkImage(
             imageUrl: carro.urlFoto ?? "",
           )
